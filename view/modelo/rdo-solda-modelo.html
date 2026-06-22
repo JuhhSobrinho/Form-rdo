@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Diário de Operações – Solda/END</title>
+    <script src="../../controller/html2pdf.bundle.min.js"></script>
+    <link rel="shortcut icon" href="../../icons/tisi.png" type="image/x-icon">
+    <style>
+        :root { --azul: rgb(0, 94, 170); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { font-family: Arial, sans-serif; font-size: 9pt; background: #fff; color: #000; }
+
+        .pagina { width: 190mm; margin: 6mm auto; padding: 7mm; border: 3px solid var(--azul); }
+
+        /* Header */
+        .rdo-header { display: flex; align-items: stretch; gap: 10px; padding-bottom: 6px; margin-bottom: 6px; border-bottom: 2px solid var(--azul); }
+        .rdo-team-box { background-color: var(--azul); color: #fff; font-size: 30pt; font-weight: bold; letter-spacing: 5px; padding: 8px 12px; display: flex; align-items: center; flex-shrink: 0; }
+        .rdo-header-right { flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; }
+        .rdo-empresa  { font-size: 10pt; font-weight: bold; }
+        .rdo-endereco { font-size: 7pt; color: #555; margin: 2px 0 3px; }
+        .rdo-titulo-linha { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #ccc; padding-top: 3px; }
+        .rdo-titulo, .rdo-numero { font-size: 10pt; font-weight: bold; }
+
+        /* Setor */
+        .setor-bloco { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; padding: 4px 0 5px; border-bottom: 1px solid #ccc; margin-bottom: 5px; }
+        .setor-item { display: flex; align-items: center; gap: 4px; font-size: 9pt; }
+        .setor-item input[type="checkbox"] { width: 12px; height: 12px; accent-color: var(--azul); cursor: default; }
+
+        /* Info */
+        .info-bloco { margin-bottom: 5px; }
+        .info-linha { display: flex; gap: 14px; margin-bottom: 2px; }
+        .info-campo { display: flex; align-items: baseline; flex: 1; gap: 4px; }
+        .info-rotulo { white-space: nowrap; color: var(--azul); font-weight: bold; font-size: 8.5pt; }
+        .info-valor  { flex: 1; border-bottom: 1px solid #666; font-size: 8.5pt; padding-bottom: 1px; min-width: 40px; overflow-wrap: break-word; word-break: break-word; }
+
+        /* Título de seção */
+        .secao-titulo { background-color: var(--azul); color: #fff; font-weight: bold; font-size: 9pt; text-align: center; padding: 3px 5px; margin: 5px 0 0; }
+
+        /* Tabelas */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid var(--azul); padding: 2px 4px; font-size: 8pt; }
+        th { background: #e0e0e0; text-align: center; }
+
+        /* Tarefas */
+        .tbl-tarefas td { vertical-align: top; white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; line-height: 1.45; }
+        .c-tarefa-desc { width: 76%; text-align: left; }
+        .c-tarefa-per  { width: 24%; text-align: center; }
+
+        /* Hora Homem */
+        .c-h-item { width: 4%; text-align: center; }
+        .c-h-tec  { width: 22%; text-align: left; }
+        .c-h-tempo { width: 10%; text-align: center; }
+        .th-extra, .td-extra { background-color: #d0e4f7; }
+        .tbl-horas td { height: 16px; text-align: center; overflow-wrap: break-word; word-break: break-word; }
+        .tbl-horas td.tec { text-align: left; }
+
+        /* Observações */
+        .obs-linha { border-bottom: 1px solid #ccc; min-height: 16px; font-size: 8pt; padding: 1px 4px; line-height: 1.4; white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; }
+
+        /* Fotos — grid 2 colunas, altura das imagens reduzida para caber 8 */
+        .fotos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 5px; }
+        .foto-cell { border: 1px solid #bbb; padding: 4px; text-align: center; }
+        .foto-cell img { max-width: 100%; max-height: 176px; object-fit: contain; display: block; margin: 0 auto; }
+        .foto-desc { font-size: 7.5pt; color: #333; margin-top: 3px; font-style: italic; overflow-wrap: break-word; }
+
+        /* Comentários */
+        .comentario-bloco { margin: 0 0 8px; }
+        .comentario-linha { border-bottom: 1px solid #ccc; min-height: 22px; font-size: 8.5pt; padding: 2px 5px; overflow-wrap: break-word; word-break: break-word; }
+
+        /* Assinaturas — espaço amplo */
+        .assinaturas {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin-top: 60px;
+            gap: 10px;
+        }
+        .ass-campo { text-align: center; font-size: 8.5pt; flex: 1; }
+        .ass-img-box {
+            height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        .ass-img-box img { max-height: 65px; max-width: 160px; object-fit: contain; }
+        .ass-linha { border-top: 1.5px solid #333; padding-top: 4px; margin-top: 4px; font-size: 8pt; }
+        .ass-nome  { font-size: 8pt; margin-top: 2px; }
+
+        /* PRINT */
+        @media print {
+            @page { size: A4 portrait; margin: 6mm; }
+            body { background: #fff; }
+            .pagina { width: 100%; margin: 0; padding: 5mm; border: 3px solid var(--azul) !important; page-break-after: always; break-after: page; }
+            .pagina:last-child { page-break-after: auto; break-after: auto; }
+            .rdo-header { position: static !important; }
+            .rdo-team-box { background-color: var(--azul) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .secao-titulo { background-color: var(--azul) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            th { background: #e0e0e0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .th-extra, .td-extra { background-color: #d0e4f7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .setor-item input[type="checkbox"] { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════ PÁGINA 1 — Dados + Tarefas + HH + Obs ════════ -->
+<div class="pagina" id="pg-1">
+    <div class="rdo-header">
+        <div class="rdo-team-box">TEAM</div>
+        <div class="rdo-header-right">
+            <div class="rdo-empresa">TISI do Brasil - Serviços Industriais Ltda.</div>
+            <div class="rdo-endereco">Av. Nossa Sra. do Bonsucesso, 3344 | Jardim Campo Alegre, Pindamonhangaba – SP | 12421-200</div>
+            <div class="rdo-titulo-linha">
+                <span class="rdo-titulo">Relatório Diário de Operações</span>
+                <span class="rdo-numero" id="tituloRdo1">Nº —</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="setor-bloco">
+        <div class="setor-item"><input type="checkbox" id="sLRS"><label for="sLRS">LRS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sHTS"><label for="sHTS">HTS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sFMS"><label for="sFMS">FMS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sTBS"><label for="sTBS">TBS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sVRS"><label for="sVRS">VRS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sCRS"><label for="sCRS">CRS</label></div>
+        <div class="setor-item"><input type="checkbox" id="sSEM"><label for="sSEM">SEM</label></div>
+        <div class="setor-item"><input type="checkbox" id="sFWS"><label for="sFWS">FWS</label></div>
+    </div>
+
+    <div class="info-bloco">
+        <div class="info-linha">
+            <div class="info-campo"><span class="info-rotulo">Cliente:</span><span class="info-valor" id="iCliente"></span></div>
+            <div class="info-campo"><span class="info-rotulo">Data:</span><span class="info-valor" id="iData"></span></div>
+        </div>
+        <div class="info-linha">
+            <div class="info-campo"><span class="info-rotulo">Local:</span><span class="info-valor" id="iLocal"></span></div>
+            <div class="info-campo"><span class="info-rotulo">Turno:</span><span class="info-valor" id="iTurno"></span></div>
+        </div>
+        <div class="info-linha">
+            <div class="info-campo"><span class="info-rotulo">Unidade:</span><span class="info-valor" id="iUnidade"></span></div>
+            <div class="info-campo"><span class="info-rotulo">OC do Cliente:</span><span class="info-valor" id="iOcCliente"></span></div>
+        </div>
+        <div class="info-linha">
+            <div class="info-campo"><span class="info-rotulo">Contato:</span><span class="info-valor" id="iContato"></span></div>
+            <div class="info-campo"><span class="info-rotulo">Os do Cliente:</span><span class="info-valor" id="iOsCliente"></span></div>
+        </div>
+        <div class="info-linha">
+            <div class="info-campo"><span class="info-rotulo">Tel. Contato:</span><span class="info-valor" id="iTelContato"></span></div>
+            <div class="info-campo"><span class="info-rotulo">OS da TEAM:</span><span class="info-valor" id="iOsTeam"></span></div>
+        </div>
+    </div>
+
+    <div class="secao-titulo">Registro de Tarefas</div>
+    <table class="tbl-tarefas">
+        <thead><tr><th class="c-tarefa-desc">Descrição da Tarefa</th><th class="c-tarefa-per">Período / Horário</th></tr></thead>
+        <tbody id="tbodyTarefas"></tbody>
+    </table>
+
+    <div class="secao-titulo">Hora Homem</div>
+    <table class="tbl-horas">
+        <thead>
+            <tr>
+                <th class="c-h-item">Item</th>
+                <th class="c-h-tec">Técnico</th>
+                <th class="c-h-tempo">Entrada</th>
+                <th class="c-h-tempo">Almoço</th>
+                <th class="c-h-tempo">Saída</th>
+                <th class="c-h-tempo th-extra">E. Extra</th>
+                <th class="c-h-tempo th-extra">Janta</th>
+                <th class="c-h-tempo th-extra">S. Extra</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyHoras"></tbody>
+    </table>
+
+    <div class="secao-titulo">Observações</div>
+    <div class="obs-bloco" id="obsBloco"></div>
+</div>
+
+<!-- ════════ PÁGINA 2 — Fotos (máx 8) ════════ -->
+<div class="pagina" id="pg-2">
+    <div class="rdo-header">
+        <div class="rdo-team-box">TEAM</div>
+        <div class="rdo-header-right">
+            <div class="rdo-empresa">TISI do Brasil - Serviços Industriais Ltda.</div>
+            <div class="rdo-endereco">Av. Nossa Sra. do Bonsucesso, 3344 | Jardim Campo Alegre, Pindamonhangaba – SP | 12421-200</div>
+            <div class="rdo-titulo-linha">
+                <span class="rdo-titulo">Relatório Diário de Operações</span>
+                <span class="rdo-numero" id="tituloRdo2">Nº —</span>
+            </div>
+        </div>
+    </div>
+    <div class="secao-titulo">Registro Fotográfico</div>
+    <div class="fotos-grid" id="fotosGrid"></div>
+</div>
+
+<!-- ════════ PÁGINA 3 — Comentários + Assinaturas ════════ -->
+<div class="pagina" id="pg-3">
+    <div class="rdo-header">
+        <div class="rdo-team-box">TEAM</div>
+        <div class="rdo-header-right">
+            <div class="rdo-empresa">TISI do Brasil - Serviços Industriais Ltda.</div>
+            <div class="rdo-endereco">Av. Nossa Sra. do Bonsucesso, 3344 | Jardim Campo Alegre, Pindamonhangaba – SP | 12421-200</div>
+            <div class="rdo-titulo-linha">
+                <span class="rdo-titulo">Relatório Diário de Operações</span>
+                <span class="rdo-numero" id="tituloRdo3">Nº —</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="secao-titulo">Comentário Adicional TEAM</div>
+    <div class="comentario-bloco">
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+    </div>
+
+    <div class="secao-titulo">Comentário Cliente</div>
+    <div class="comentario-bloco">
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+        <div class="comentario-linha"></div><div class="comentario-linha"></div>
+    </div>
+
+    <!-- Assinaturas com espaço amplo e suporte a imagem -->
+    <div class="assinaturas">
+        <div class="ass-campo">
+            <div class="ass-img-box" id="boxAssTeam">
+                <!-- imagem de assinatura inserida pelo JS se existir -->
+            </div>
+            <div class="ass-linha" id="nomeEmissor">_______________________________</div>
+            <div class="ass-nome"><strong>Representante Team</strong></div>
+            <div class="ass-nome" id="dataRodape"></div>
+        </div>
+        <div class="ass-campo">
+            <div class="ass-img-box"></div>
+            <div class="ass-linha">_______________________________</div>
+            <div class="ass-nome"><strong>Representante do Cliente</strong></div>
+            <div class="ass-nome">____/____/________</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const dados = JSON.parse(localStorage.getItem("dadosRdoSolda"));
+    if (!dados) { alert("Dados não encontrados. Preencha o formulário primeiro."); return; }
+
+    const fmtData = d => { if (!d) return ""; const [y,m,day]=d.split("-"); return `${day}/${m}/${y}`; };
+    const nrdo = dados.nrdo || "—";
+
+    ["tituloRdo1","tituloRdo2","tituloRdo3"].forEach(id => document.getElementById(id).textContent = "Nº " + nrdo);
+
+    // Setores
+    const mapSetor = { LRS:"sLRS", HTS:"sHTS", FMS:"sFMS", TBS:"sTBS", VRS:"sVRS", CRS:"sCRS", SEM:"sSEM", FWS:"sFWS" };
+    (dados.setores||[]).forEach(s => { const el=document.getElementById(mapSetor[s]); if(el) el.checked=true; });
+
+    // Info
+    document.getElementById("iCliente").textContent    = dados.cliente    || "";
+    document.getElementById("iData").textContent       = fmtData(dados.data);
+    document.getElementById("iLocal").textContent      = dados.local      || "";
+    document.getElementById("iTurno").textContent      = dados.turno      || "";
+    document.getElementById("iUnidade").textContent    = dados.unidade    || "";
+    document.getElementById("iOcCliente").textContent  = dados.ocCliente  || "";
+    document.getElementById("iContato").textContent    = dados.contato    || "";
+    document.getElementById("iOsCliente").textContent  = dados.osCliente  || "";
+    document.getElementById("iTelContato").textContent = dados.telContato || "";
+    document.getElementById("iOsTeam").textContent     = dados.osTeam     || "";
+
+    // Tarefas
+    const tbodyTarefas = document.getElementById("tbodyTarefas");
+    const tarefas = dados.tarefas || [];
+    tarefas.forEach(t => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="c-tarefa-desc">${t.descricao}</td><td class="c-tarefa-per">${t.periodo}</td>`;
+        tbodyTarefas.appendChild(tr);
+    });
+    for (let i = tarefas.length; i < Math.max(tarefas.length + 2, 13); i++) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="c-tarefa-desc">&nbsp;</td><td class="c-tarefa-per"></td>`;
+        tbodyTarefas.appendChild(tr);
+    }
+
+    // Hora Homem (máx 8)
+    const tbodyHoras = document.getElementById("tbodyHoras");
+    const horas = dados.horasHomem || [];
+    horas.forEach((h, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="c-h-item">${idx+1}</td><td class="tec">${h.tecnico}</td><td>${h.entrada}</td><td>${h.almoco}</td><td>${h.saida}</td><td class="td-extra">${h.extraEntra}</td><td class="td-extra">${h.janta}</td><td class="td-extra">${h.extraSai}</td>`;
+        tbodyHoras.appendChild(tr);
+    });
+    for (let i = horas.length; i < 8; i++) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class="c-h-item">${i+1}</td><td class="tec"></td><td></td><td></td><td></td><td class="td-extra"></td><td class="td-extra"></td><td class="td-extra"></td>`;
+        tbodyHoras.appendChild(tr);
+    }
+
+    // Observações
+    const obsBloco = document.getElementById("obsBloco");
+    const obs = (dados.observacoes||"").trim();
+    if (obs) obs.split("\n").forEach(linha => { const d=document.createElement("div"); d.className="obs-linha"; d.textContent=linha; obsBloco.appendChild(d); });
+    const nObs = obs ? obs.split("\n").length : 0;
+    for (let i=nObs; i<Math.max(nObs+1,3); i++) { const d=document.createElement("div"); d.className="obs-linha"; obsBloco.appendChild(d); }
+
+    // Fotos (máx 8) — só preenchidas
+    const fotosGrid = document.getElementById("fotosGrid");
+    let algum = false;
+    for (let i=1; i<=8; i++) {
+        const src  = dados[`foto${i}`];
+        const desc = dados[`desc_foto${i}`] || "";
+        if (!src) continue;
+        algum = true;
+        const cell = document.createElement("div");
+        cell.className = "foto-cell";
+        cell.innerHTML = `<img src="${src}" alt="Foto ${i}"><div class="foto-desc">${desc || "Foto "+i}</div>`;
+        fotosGrid.appendChild(cell);
+    }
+    if (!algum) fotosGrid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#aaa;padding:20px;font-size:8pt;">— Nenhuma foto registrada —</div>`;
+
+    // Assinaturas
+    document.getElementById("nomeEmissor").textContent = dados.emitido || "_______________________________";
+    document.getElementById("dataRodape").textContent  = fmtData(dados.data) || "";
+
+    // Assinatura importada
+    if (dados.assinaturaTeam) {
+        const box = document.getElementById("boxAssTeam");
+        box.innerHTML = `<img src="${dados.assinaturaTeam}" alt="Assinatura">`;
+    }
+
+    window.print();
+});
+</script>
+</body>
+</html>

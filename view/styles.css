@@ -1,0 +1,150 @@
+/* ===== Variáveis de tema ===== */
+:root {
+    --cor-destaque: #005eaa;
+}
+
+body.light-mode {
+    --bg: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-input: #ffffff;
+    --text: #212529;
+    --text-muted: #6c757d;
+    --border: #dee2e6;
+    --card-header-bg: #e9ecef;
+    --card-header-text: #212529;
+    --placeholder: #6c757d;
+}
+
+body.dark-mode {
+    --bg: #121212;
+    --bg-card: #1e1e1e;
+    --bg-input: #2a2a2a;
+    --text: #e0e0e0;
+    --text-muted: #aaaaaa;
+    --border: #3a3a3a;
+    --card-header-bg: #2c2c2c;
+    --card-header-text: #e0e0e0;
+    --placeholder: #888888;
+}
+
+/* ===== Base ===== */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== Títulos ===== */
+.titulo-rde {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.titulo-resumo {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--card-header-text);
+}
+
+/* ===== Cards ===== */
+.card {
+    background-color: var(--bg-card);
+    border-color: var(--border);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card-header {
+    background-color: var(--card-header-bg);
+    color: var(--card-header-text);
+    border-bottom-color: var(--border);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== Inputs / Selects / Textareas ===== */
+.form-control,
+.form-select {
+    background-color: var(--bg-input);
+    color: var(--text);
+    border-color: var(--border);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--bg-input);
+    color: var(--text);
+    border-color: var(--cor-destaque);
+    box-shadow: 0 0 0 0.2rem rgba(0, 94, 170, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--placeholder);
+}
+
+/* ===== Labels ===== */
+.form-label,
+label {
+    color: var(--text);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* ===== Card body com scroll horizontal ===== */
+.rdo-card-body {
+    overflow-x: auto;
+    padding: 0.75rem 1rem;
+}
+
+.rdo-horas-row {
+    flex-wrap: nowrap;
+    min-width: 700px;
+}
+
+/* ===== Textarea de tarefas ===== */
+.tarefa-desc {
+    resize: none;
+    overflow: hidden;
+    min-height: 36px;
+}
+
+/* ===== Campo obrigatorio com borda de destaque após preenchimento ===== */
+.campo-obrigatorio {
+    border-color: var(--border);
+}
+
+/* ===== Toast PWA ===== */
+.toast {
+    background-color: var(--bg-card);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.toast-header {
+    background-color: var(--card-header-bg);
+    color: var(--card-header-text);
+    border-bottom-color: var(--border);
+}
+
+.toast-link {
+    color: var(--cor-destaque);
+}
+
+/* ===== Botão submit ===== */
+.btn-primary {
+    background-color: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+}
+
+/* ===== Previsualização assinatura ===== */
+#previewAssinatura {
+    background-color: var(--bg-input);
+    border-color: var(--border) !important;
+    color: var(--text-muted);
+    transition: background-color 0.3s;
+}

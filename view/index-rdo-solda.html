@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="shortcut icon" href="../icons/tisi.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <title>RDO Solda/END</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="p-3 m-0 light-mode">
+
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(0, 94, 170)">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TISI TEAM</a>
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">RDO</a>
+                    <a class="nav-link" href="#" id="toggleTheme">Ir para Modo Escuro</a>
+                    <a class="nav-link" href="#" id="installBtn">📲 Instalar app</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast PWA -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="installToast" class="toast toast-install" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">📲 Instale o app</strong>
+                <button type="button" class="btn-close" id="closeInstallToast"></button>
+            </div>
+            <div class="toast-body">
+                Tenha acesso mais rápido e offline 🚀<br>
+                <a href="#" id="toastInstallBtn" class="toast-link">👉 Clique aqui para Instalar</a>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="titulo-rde">RDO – Relatório Diário de Operações (Solda / END)</h1>
+    <form id="formRelatorio">
+
+        <!-- Cabeçalho -->
+        <div class="row g-3 mb-3">
+            <div class="col-6">
+                <div class="mb-3"><label class="form-label">Número RDO</label><input type="text" class="form-control campo-obrigatorio" id="nrdo" placeholder="Ex: 32/26"></div>
+                <div class="mb-3"><label class="form-label">Emitido Por</label><input type="text" class="form-control campo-obrigatorio" id="emitido" placeholder="Ex: Roberto Tales Garcia"></div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3"><label class="form-label">Data</label><input type="date" class="form-control campo-obrigatorio" id="data"></div>
+                <div class="mb-3"><label class="form-label">Turno</label>
+                    <select class="form-control campo-obrigatorio" id="turno">
+                        <option value="">Selecione...</option>
+                        <option value="Diurno">Diurno</option>
+                        <option value="Noturno">Noturno</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setor -->
+        <div class="card mb-4">
+            <div class="card-header">Setor</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="LRS" id="sto1"><label class="form-check-label" for="sto1">LRS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="HTS" id="sto2"><label class="form-check-label" for="sto2">HTS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="FMS" id="sto3"><label class="form-check-label" for="sto3">FMS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="TBS" id="sto4"><label class="form-check-label" for="sto4">TBS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="VRS" id="sto5"><label class="form-check-label" for="sto5">VRS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="CRS" id="sto6"><label class="form-check-label" for="sto6">CRS</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="SEM" id="sto7"><label class="form-check-label" for="sto7">SEM</label></div></div>
+                    <div class="col-md-3 col-6"><div class="form-check"><input class="form-check-input" name="tipoSetor" type="checkbox" value="FWS" id="sto8"><label class="form-check-label" for="sto8">FWS</label></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dados Gerais -->
+        <div class="row g-3 mb-3">
+            <div class="col-6">
+                <div class="mb-3"><label class="form-label">Cliente</label><input type="text" class="form-control campo-obrigatorio" id="cliente" placeholder="Ex: NTS / INDUSTEC - 8104-25-0032"></div>
+                <div class="mb-3"><label class="form-label">Local</label><input type="text" class="form-control campo-obrigatorio" id="local" placeholder="Ex: PAULINIA - SP"></div>
+                <div class="mb-3"><label class="form-label">Unidade</label><input type="text" class="form-control campo-obrigatorio" id="unidade" placeholder="Ex: GASCAR Ø 28&quot; PR/PE PAULINIA"></div>
+                <div class="mb-3"><label class="form-label">Contato</label><input type="text" class="form-control" id="contato" placeholder="Ex: BRUNO MACHADO"></div>
+                <div class="mb-3"><label class="form-label">Tel. Contato</label><input type="text" class="form-control" id="telContato" placeholder="Ex: 081-99613-8543"></div>
+            </div>
+            <div class="col-6">
+                <div class="mb-3"><label class="form-label">OC do Cliente</label><input type="text" class="form-control" id="ocCliente" placeholder="Ex: OC-12345"></div>
+                <div class="mb-3"><label class="form-label">OS do Cliente</label><input type="text" class="form-control" id="osCliente" placeholder="Ex: NTS / INDUSTEC - 8104-25-0032"></div>
+                <div class="mb-3"><label class="form-label">OS da TEAM</label><input type="text" class="form-control campo-obrigatorio" id="osTeam" placeholder="Ex: 8104-25-0032"></div>
+            </div>
+        </div>
+
+        <!-- Registro de Tarefas -->
+        <div class="card mb-4">
+            <div class="card-header">Registro de Tarefas</div>
+            <div class="rdo-card-body">
+                <div class="row mb-1 g-2" style="flex-wrap:nowrap;min-width:500px">
+                    <div class="col-9"><small class="text-muted fw-bold">Descrição da Tarefa</small></div>
+                    <div class="col-3"><small class="text-muted fw-bold">Período / Horário</small></div>
+                </div>
+                <div class="row mb-2 g-2 tarefa-row" id="grupo-tarefa01" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control campo-obrigatorio tarefa-desc" id="tarefa01" rows="1" placeholder="Ex: REALIZAÇÃO DE DDS..."></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo01" placeholder="Ex: 08:00 às 08:30h"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa02" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa02" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo02"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa03" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa03" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo03"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa04" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa04" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo04"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa05" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa05" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo05"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa06" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa06" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo06"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa07" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa07" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo07"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa08" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa08" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo08"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa09" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa09" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo09"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa10" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa10" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo10"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa11" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa11" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo11"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa12" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa12" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo12"></div></div>
+                <div class="row mb-2 g-2 tarefa-row d-none" id="grupo-tarefa13" style="flex-wrap:nowrap;min-width:500px"><div class="col-9"><textarea class="form-control tarefa-desc" id="tarefa13" rows="1"></textarea></div><div class="col-3"><input type="text" class="form-control" id="periodo13"></div></div>
+            </div>
+        </div>
+
+        <!-- Hora Homem (máx 8) -->
+        <div class="card mb-4">
+            <div class="card-header">Hora Homem</div>
+            <div class="rdo-card-body">
+                <div class="row mb-2 g-1 rdo-horas-row" id="grupo-horas01">
+                    <div class="col-3"><label>Técnico</label><input type="text" class="form-control campo-obrigatorio" id="tec01" placeholder="Nome do técnico"></div>
+                    <div class="col-2"><label>Entrada</label><input type="text" class="form-control campo-obrigatorio" id="entra01" placeholder="Ex: 08:00"></div>
+                    <div class="col-2"><label>Almoço</label><input type="text" class="form-control" id="almoco01" placeholder="Ex: NA"></div>
+                    <div class="col-2"><label>Saída</label><input type="text" class="form-control campo-obrigatorio" id="saida01" placeholder="Ex: 18:00"></div>
+                    <div class="col-1"><label>E. Extra</label><input type="text" class="form-control" id="extraEntra01" placeholder="NA"></div>
+                    <div class="col-1"><label>Janta</label><input type="text" class="form-control" id="janta01" placeholder="NA"></div>
+                    <div class="col-1"><label>S. Extra</label><input type="text" class="form-control" id="extraSai01" placeholder="NA"></div>
+                </div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas02"><div class="col-3"><input type="text" class="form-control" id="tec02" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra02" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco02" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida02" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra02" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta02" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai02" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas03"><div class="col-3"><input type="text" class="form-control" id="tec03" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra03" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco03" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida03" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra03" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta03" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai03" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas04"><div class="col-3"><input type="text" class="form-control" id="tec04" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra04" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco04" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida04" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra04" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta04" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai04" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas05"><div class="col-3"><input type="text" class="form-control" id="tec05" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra05" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco05" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida05" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra05" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta05" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai05" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas06"><div class="col-3"><input type="text" class="form-control" id="tec06" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra06" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco06" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida06" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra06" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta06" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai06" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas07"><div class="col-3"><input type="text" class="form-control" id="tec07" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra07" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco07" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida07" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra07" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta07" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai07" placeholder="NA"></div></div>
+                <div class="row mb-2 g-1 rdo-horas-row d-none" id="grupo-horas08"><div class="col-3"><input type="text" class="form-control" id="tec08" placeholder="Técnico"></div><div class="col-2"><input type="text" class="form-control" id="entra08" placeholder="Entrada"></div><div class="col-2"><input type="text" class="form-control" id="almoco08" placeholder="Almoço"></div><div class="col-2"><input type="text" class="form-control" id="saida08" placeholder="Saída"></div><div class="col-1"><input type="text" class="form-control" id="extraEntra08" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="janta08" placeholder="NA"></div><div class="col-1"><input type="text" class="form-control" id="extraSai08" placeholder="NA"></div></div>
+            </div>
+        </div>
+
+        <!-- Observações -->
+        <div class="mb-3">
+            <div class="card-header"><h1 class="titulo-resumo">Observações</h1></div>
+            <textarea class="form-control" id="observacoes" rows="5" placeholder="Descreva aqui as observações, registros relevantes e comunicações do dia..."></textarea>
+        </div>
+
+        <!-- Registro Fotográfico (máx 8) -->
+        <div class="card mb-4">
+            <div class="card-header">Registro Fotográfico <small class="text-muted">(máximo 8 fotos)</small></div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 1</label><input class="form-control mb-1" type="file" id="foto1" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto1" placeholder="Descrição da foto 1"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 2</label><input class="form-control mb-1" type="file" id="foto2" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto2" placeholder="Descrição da foto 2"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 3</label><input class="form-control mb-1" type="file" id="foto3" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto3" placeholder="Descrição da foto 3"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 4</label><input class="form-control mb-1" type="file" id="foto4" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto4" placeholder="Descrição da foto 4"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 5</label><input class="form-control mb-1" type="file" id="foto5" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto5" placeholder="Descrição da foto 5"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 6</label><input class="form-control mb-1" type="file" id="foto6" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto6" placeholder="Descrição da foto 6"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 7</label><input class="form-control mb-1" type="file" id="foto7" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto7" placeholder="Descrição da foto 7"></div>
+                    <div class="col-12 col-md-6"><label class="form-label fw-bold">Foto 8</label><input class="form-control mb-1" type="file" id="foto8" accept="image/*"><input type="text" class="form-control form-control-sm" id="desc_foto8" placeholder="Descrição da foto 8"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assinatura do Representante Team -->
+        <div class="card mb-4">
+            <div class="card-header">Assinatura – Representante Team</div>
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Importar assinatura (imagem)</label>
+                        <input class="form-control" type="file" id="assinaturaTeam" accept="image/*">
+                        <small class="text-muted">PNG ou JPG com fundo transparente ou branco</small>
+                    </div>
+                    <div class="col-12 col-md-6 text-center">
+                        <div id="previewAssinatura" style="min-height:60px; border:1px dashed #aaa; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:13px; padding:8px;">
+                            Pré-visualização da assinatura
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Gerar Relatório de Operações</button>
+    </form>
+
+    <script type="module" src="../controller/main-rdo-solda.js"></script>
+    <style>
+        .rdo-card-body { overflow-x: auto; padding: 0.75rem 1rem; }
+        .rdo-horas-row { flex-wrap: nowrap; min-width: 700px; }
+        .tarefa-desc { resize: none; overflow: hidden; min-height: 36px; }
+    </style>
+</body>
+</html>
