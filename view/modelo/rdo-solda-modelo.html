@@ -153,6 +153,9 @@
         </div>
     </div>
 
+    <div class="secao-titulo">Título da Atividade</div>
+    <div class="obs-bloco" id="tituloAtividadeBloco"></div>
+
     <div class="secao-titulo">Registro de Tarefas</div>
     <table class="tbl-tarefas">
         <thead><tr><th class="c-tarefa-desc">Descrição da Tarefa</th><th class="c-tarefa-per">Período / Horário</th></tr></thead>
@@ -273,6 +276,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("iOsCliente").textContent  = dados.osCliente  || "";
     document.getElementById("iTelContato").textContent = dados.telContato || "";
     document.getElementById("iOsTeam").textContent     = dados.osTeam     || "";
+
+    const tituloAtividade = (dados.tituloAtividade || "").trim();
+    const tituloAtividadeBloco = document.getElementById("tituloAtividadeBloco");
+    if (tituloAtividade) {
+        tituloAtividade.split("\n").forEach(linha => {
+            const div = document.createElement("div");
+            div.className = "obs-linha";
+            div.textContent = linha;
+            tituloAtividadeBloco.appendChild(div);
+        });
+    } else {
+        tituloAtividadeBloco.innerHTML = "<div class='obs-linha'>&nbsp;</div><div class='obs-linha'>&nbsp;</div>";
+    }
 
     // Tarefas
     const tbodyTarefas = document.getElementById("tbodyTarefas");

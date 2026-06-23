@@ -145,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const dados = {
             nrdo:       document.getElementById("nrdo").value.trim(),
             emitido:    document.getElementById("emitido").value.trim(),
+            tituloAtividade: document.getElementById("tituloAtividade")?.value.trim(),
             data:       document.getElementById("data").value,
             turno:      document.getElementById("turno").value,
             setores:    Array.from(setoresSel).map(cb=>cb.value),
