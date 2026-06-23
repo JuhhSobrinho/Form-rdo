@@ -1,8 +1,13 @@
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8">
-
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./icons/icon-192.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.svg">
+    <meta name="theme-color" content="#005eaa">
+    <title>RDO TEAM</title>
     <style>
   body.splash {
     margin: 0;
@@ -62,10 +67,12 @@
       <div class="line-splash"></div>
     </section>
     <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
     setTimeout(() => {
       window.location.href = "./view/index-rdo.html";
     }, 3000);
-  
 </script>
 
   </body>
