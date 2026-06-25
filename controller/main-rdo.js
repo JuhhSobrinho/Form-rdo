@@ -171,6 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
             body:JSON.stringify({tipo:"RDO-SOLDA",nrdo:dados.nrdo,data:dados.data,cliente:dados.cliente,local:dados.local,unidade:dados.unidade,osTeam:dados.osTeam,setores:dados.setores.join(", "),emitido:dados.emitido,tarefas:dados.tarefas.map(t=>`${t.descricao}[${t.periodo}]`).join(" | "),equipe:dados.horasHomem.map(h=>`${h.tecnico}:E=${h.entrada}S=${h.saida}`).join(" | ")})
         }).catch(()=>{});
 
-        window.open("../view/modelo/rdo-solda-modelo.html","_blank");
+        window.open("../view/modelo/rdo-modelo.html","_blank");
     });
 });
